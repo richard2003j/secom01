@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AutoClosedFlg__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>フロー以外からのクローズ、カスタムアクション以外からの再オープンを制御するための項目
+・フローからのクローズ時に true
+・カスタムアクションからのオープン時に false
+・画面からの入力はさせない</description>
+    <externalId>false</externalId>
+    <label>自動クローズフラグ</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

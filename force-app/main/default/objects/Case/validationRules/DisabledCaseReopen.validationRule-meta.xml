@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DisabledCaseReopen</fullName>
+    <active>true</active>
+    <description>再オープンはカスタムアクションで行わせるため、画面編集では再オープンできないようにする入力規則</description>
+    <errorConditionFormula>AND(
+				NOT(ISPICKVAL( Status , &apos;Closed&apos;)),
+				AutoClosedFlg__c
+)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>再オープンをする際は、[再オープン]から実行してください。</errorMessage>
+</ValidationRule>

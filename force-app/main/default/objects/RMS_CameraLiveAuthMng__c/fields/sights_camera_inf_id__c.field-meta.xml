@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>sights_camera_inf_id__c</fullName>
+    <externalId>false</externalId>
+    <label>Sightsカメラ情報ID</label>
+    <length>36</length>
+    <referenceTo>SIGHTS_CAMERA_INF__x</referenceTo>
+    <relationshipLabel>カメラ映像権限管理</relationshipLabel>
+    <relationshipName>CameraLiveAuthMng_sights_camera_inf_LKUP</relationshipName>
+    <trackTrending>false</trackTrending>
+    <type>ExternalLookup</type>
+</CustomField>

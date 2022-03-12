@@ -1,0 +1,32 @@
+<template>
+  <article class="slds-card">
+    <div class="slds-card__header slds-grid" if:true={showTitle}>
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__body">
+          <h2 class="slds-card__header-title">
+            <div class="slds-card__header slds-truncate" title="Photo">
+              <lightning-icon
+                icon-name="standard:photo"
+                size="small"
+              ></lightning-icon>
+              <span class="slds-m-left_small" style="font-weight: bold"
+                >カメラの正常状態基準</span
+              >
+            </div>
+          </h2>
+        </div>
+      </header>
+    </div>
+    <div>
+      <lightning-tabset>
+        <lightning-tab label="カメラ映像基準画像">
+          <!-- 3Qデモ用に固定で画像差し込み -->
+          <img src={cameraNomalViewImage} onerror={getErrorImage} width={imageSize} />
+        </lightning-tab>
+        <lightning-tab label="正常温度範囲">
+          <div>稼働時　-30°C〜60°C</div>
+        </lightning-tab>
+      </lightning-tabset>
+    </div>
+  </article>
+</template>

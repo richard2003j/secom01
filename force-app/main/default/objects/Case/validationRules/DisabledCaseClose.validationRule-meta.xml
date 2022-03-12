@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DisabledCaseClose</fullName>
+    <active>true</active>
+    <description>クローズはフローで行わせるため、画面編集ではクローズできないようにする入力規則</description>
+    <errorConditionFormula>AND(
+				ISPICKVAL( Status , &apos;Closed&apos;),
+				NOT(AutoClosedFlg__c )
+)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>クローズする際は、[対応完了メール送信]から実行してください。</errorMessage>
+</ValidationRule>

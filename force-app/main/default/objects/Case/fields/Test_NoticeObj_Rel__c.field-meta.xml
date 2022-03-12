@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Test_NoticeObj_Rel__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Test通知確認用オブジェクトへの参照項目</description>
+    <externalId>false</externalId>
+    <label>Test通知確認用</label>
+    <referenceTo>Test_NoticeObj__c</referenceTo>
+    <relationshipLabel>ケース</relationshipLabel>
+    <relationshipName>Test_NoticeObj_Rels</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

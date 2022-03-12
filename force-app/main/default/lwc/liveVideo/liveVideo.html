@@ -1,0 +1,14 @@
+<template>
+  <lightning-card title="ライブ映像" icon-name="custom:custom14">
+    <div class="slds-m-around_medium">
+      <video id="shaka-video" data-id="shakaVideoDataId" controls></video>
+    </div>
+  <lightning-button label="再生" onclick={handleFetch}></lightning-button>
+  <hr />
+  <div class="slds-m-around_medium">
+    <h2>正常時のカメラ像</h2>
+    <!-- 3Qデモ用に固定で画像差し込み -->
+    <img src={cameraNomalViewImage} width=300>
+  </div>
+  </lightning-card>
+</template>

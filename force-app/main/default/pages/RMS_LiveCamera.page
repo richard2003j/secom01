@@ -1,0 +1,199 @@
+<apex:page controller="RMS_LiveCameraCtrl" lightningStylesheets="true">
+    <apex:slds />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" />
+    <style type="text/css">
+        label {
+            font: inherit;
+        }
+
+        .call-btn {
+            display: inline-block;
+            padding: 1em 4em;
+            border: 1px solid;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .call-btn-off {
+            color: #000;
+            background-color: #eee;
+            border-color: #333;
+        }
+
+        .call-btn-off:hover {
+            background-color: #ccc;
+        }
+
+        .call-btn-on {
+            color: #fff;
+            background-color: #ff4500;
+            border-color: #fff;
+        }
+
+        .call-btn-on:hover {
+            color: #000;
+            background-color: #ffdab9;
+        }
+
+
+        .toggle-buttons {
+            margin-bottom: 1em;
+        }
+
+        .toggle-buttons label {
+            position: relative;
+        }
+
+        .toggle-buttons [type=checkbox] {
+            display: none;
+        }
+
+        body .btn.ctl {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            padding: 16px;
+            margin-bottom: 0;
+            font-size: 16px;
+            line-height: 20px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            color: #333333;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+            background-color: #f5f5f5;
+            background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+            background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+            border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            *background-color: #e6e6e6;
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+            border: 1px solid #bbbbbb;
+            *border: 0;
+            border-bottom-color: #a2a2a2;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            *margin-left: .3em;
+            -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
+            -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
+        }
+
+        body .btn.ctl:hover,
+        body .btn.ctl:active {
+            color: #333333;
+            background-color: #e6e6e6;
+            *background-color: #d9d9d9;
+        }
+
+        .ctl-wrapper {
+            margin-bottom: 6px;
+        }
+
+        .player-wrapper {
+            width: 100%;
+        }
+
+        .player-wrapper video {
+            width: 100%;
+        }
+
+        .video-btn {
+            content: "";
+            top: 10px;
+            left: 0;
+            right: 0;
+            cursor: pointer;
+        }
+
+        .no-sights-camera {
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+
+    <script src="http://cdn.dashjs.org/v4.2.0/dash.all.min.js"></script>
+
+    <body class="slds-scope">
+        <div class="player-wrapper" style="{!IF(isSightsCamera, 'display: block;', 'display: none;')}">
+            <!--
+            <video id="videoplayer" muted="muted" controls="controls" poster="{!URLFOR($Resource.RMS_Assets, IF(isCameraAuth, 'img/video-play.png', 'img/video-denied.png'))}"
+                autoplay="true">
+            </video>
+        -->
+            <video id="videoplayer" muted="muted" controls="controls" poster="{!IF(isCameraAuth, '', URLFOR($Resource.RMS_Assets, 'img/video-denied.png'))}"
+                autoplay="true">
+            </video>
+            <button id="video-play-btn" type="button" class="video-btn slds-button slds-button_brand" onclick="play();" disabled="true">
+                再生
+            </button>
+        </div>
+
+        <div class="no-sights-camera" style="{!IF(isSightsCamera, 'display: none;', 'display: block;')}">
+            Sightsカメラはありません。
+        </div>
+    </body>
+
+
+    <script>
+
+        var player = dashjs.MediaPlayer().create();
+        var video;
+        // prettier-ignore
+        var isCameraAuth = {!isCameraAuth};
+
+        window.onload = function () {
+            var btn = document.getElementById("video-play-btn");
+
+            if (btn && this.isCameraAuth) {
+                // 再生権限がある場合
+
+                // 再生ボタンの活性制御
+                btn.disabled = false;
+
+                // videoのイベント設定
+                this.video = document.getElementById('videoplayer');
+            }
+        }
+
+        async function loadLiveVideo() {
+            const response = await fetch(
+                //'https://m5ymfrpvuk.execute-api.ap-northeast-1.amazonaws.com/srv/api/remote_maintenance/devices/cameras/cb390e09-f82e-da5d-a16e-73d6b58b44d7/live_url',
+                'https://m5ymfrpvuk.execute-api.ap-northeast-1.amazonaws.com/srv/api/remote_maintenance/devices/cameras/{!currentDeviceMng.device_mng_id__c}/live_url',
+                {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: { 'Accept': 'application/json', 'x-api-key': 'bfHQmYpTT56IJMu9XaoND29dlOSMCTnU3dVYWzjf' },
+                }
+            )
+            return response.json()
+        };
+
+        async function play() {
+            console.log(this.player);
+            this.player.initialize();
+            this.player.setAutoPlay(false);
+            // this.player.updateSettings({
+            //   streaming: {
+            //     lowLatencyEnabled: true,
+            //     delay: {
+            //       liveDelay: 3
+            //     }
+            //   }
+            // });
+            this.player.attachView(this.video);
+            const data = await loadLiveVideo();
+            console.log('url', data.url);
+            this.player.attachSource(data.url);
+        }
+    </script>
+
+</apex:page>

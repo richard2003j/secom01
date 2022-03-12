@@ -1,0 +1,42 @@
+<template>
+  <div if:true={sightsCameraInfList.length}>
+    <article class="slds-card">
+      <div class="slds-card__header slds-grid" if:true={showTitle}>
+        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+          <div class="slds-media__body">
+            <h2 class="slds-card__header-title">
+              <div
+                class="slds-card__header slds-truncate"
+                title="Sightsカメラ異常状態"
+              >
+                <lightning-icon
+                  icon-name="custom:custom38"
+                  size="small"
+                ></lightning-icon>
+                <span class="slds-m-left_small" style="font-weight: bold"
+                  >Sightsカメラ異常状態</span
+                >
+              </div>
+            </h2>
+          </div>
+        </header>
+      </div>
+      <div class="slds-scrollable" if:true={sightsCameraErrorInfList.length}>
+        <!-- リスト -->
+        <lightning-datatable
+          key-field="ExternalId"
+          data={sightsCameraErrorInfList}
+          columns={sightsCameraErrorColumns}
+          show-row-number-column
+          hide-checkbox-column
+          onrowaction={handleRowAction}
+          data-id="camera-error-list"
+        >
+        </lightning-datatable>
+      </div>
+      <div class="slds-m-left_small" if:false={sightsCameraErrorInfList.length}>
+        関連するSightsカメラ異常状態はありません。
+      </div>
+    </article>
+  </div>
+</template>
